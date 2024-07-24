@@ -128,6 +128,8 @@ function App() {
     <div className="App">
       <Notify />
       <div className="container">
+        <h3>Hi, I am Thongular</h3>
+        <br></br>
         <button className="btn btn-add"
           onClick={() => setAddSection(!addSection)}>
           Tạo mới
