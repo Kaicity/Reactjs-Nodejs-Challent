@@ -1,12 +1,11 @@
-import { faEdit, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import FormTable from './components/FormTable'
+import TableData from './components/TableData';
 
 axios.defaults.baseURL = "http://localhost:1620/"
-
 
 function Notify() {
   return (
@@ -19,11 +18,19 @@ function Notify() {
 
 function App() {
   const [addSection, setAddSection] = useState(false)
+  const [editSection, setEditSection] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobile: "",
     address: "",
+  })
+  const [formDataEdit, setFormDataEdit] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    address: "",
+    _id: "",
   })
   const [dataList, setDataList] = useState([])
 
@@ -38,7 +45,7 @@ function App() {
   }
 
 
-  //Submit form
+  //Handle Submit form
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (formData.name.trim() !== "" || formData.email.trim() !== ""
@@ -49,6 +56,13 @@ function App() {
       if (data.data.success) {
         toast.success(data.data.message)
         setAddSection(!addSection)
+        setFormData({
+          name: "",
+          email: "",
+          mobile: "",
+          address: "",
+        })
+        getFetchData()
       }
     }
     else {
@@ -56,8 +70,8 @@ function App() {
     }
   }
 
-  //Get all Data
-  const fetchData = async () => {
+  //Handle Get all Data
+  const getFetchData = async () => {
     const data = await axios.get("/")
     console.log(data)
     //Check if add data success
@@ -66,8 +80,48 @@ function App() {
     }
   }
 
+  //Handle delete data
+  const handleDelete = async (id) => {
+    const data = await axios.delete("/delete/" + id)
+
+    if (data.data.success) {
+      toast.success(data.data.message)
+      getFetchData()
+    }
+  }
+
+  //Handle control data binding form
+  const handleEditOnchange = async (e) => {
+    const { value, name } = e.target
+    setFormDataEdit((preve) => {
+      return {
+        ...preve,
+        [name]: value
+      }
+    })
+  }
+
+  //Handle update data
+  const handleUpdate = async (e) => {
+    e.preventDefault()
+    const data = await axios.put("/update", formDataEdit)
+
+    if (data.data.success) {
+      toast.success(data.data.message)
+      setEditSection(!editSection)
+      getFetchData()
+    }
+  }
+
+  //Handle edit data old will load to form
+  const handleEdit = async (data) => {
+    setFormDataEdit(data)
+    setEditSection(!editSection)
+  }
+
+
   useEffect(() => {
-    fetchData()
+    getFetchData()
   }, [])
 
   return (
@@ -78,68 +132,32 @@ function App() {
           onClick={() => setAddSection(!addSection)}>
           Tạo mới
         </button>
-        {addSection && (
-          <div className="add-container">
-            <form onSubmit={handleSubmit}>
-              <div className="content-title">
-                <h2>Thêm nhân viên</h2>
-                <div className="btn-close"
-                  onClick={() => setAddSection(!addSection)}
-                > <h3>-</h3>
-                </div>
-              </div>
-              <label htmlFor="name">Họ tên: </label>
-              <input type="text" id="name" name="name" onChange={handleOnchange} />
+        {
+          addSection && (
+            <FormTable
+              handleSubmit={handleSubmit}
+              handleOnchange={handleOnchange}
+              handleClose={() => setAddSection(!addSection)}
+              dataOld={formData}
+            />
+          )
+        }
+        {
+          editSection && (
+            <FormTable
+              handleSubmit={handleUpdate}
+              handleOnchange={handleEditOnchange}
+              handleClose={() => setEditSection(!editSection)}
+              dataOld={formDataEdit}
+            />
+          )
+        }
 
-              <label htmlFor="email">Email: </label>
-              <input type="text" id="email" name="email" onChange={handleOnchange} />
-
-              <label htmlFor="mobile">Số điện thoại: </label>
-              <input type="number" id="mobile" name="mobile" onChange={handleOnchange} />
-
-              <label htmlFor="address">Địa chỉ hiện tại: </label>
-              <textarea id="address" name="address" onChange={handleOnchange} />
-              <button className="btn-submit">Lưu thông tin</button>
-            </form>
-          </div>
-        )}
-
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Họ Tên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Địa chỉ</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                dataList.map((dataList, index) => {
-                  return (
-                    <tr>
-                      <td>{index}</td>
-                      <td>{dataList.name}</td>
-                      <td>{dataList.email}</td>
-                      <td>{dataList.mobile}</td>
-                      <td>{dataList.address}</td>
-                      <td>
-                        <div className="action-container">
-                          <button className="btn-see"><FontAwesomeIcon icon={faEye}></FontAwesomeIcon></button>
-                          <button className="btn-edit" onClick={() => setAddSection(!addSection)}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon></button>
-                          <button className="btn-delete"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </table>
-        </div>
+        <TableData
+          dataList = {dataList}
+          handleEdit = {handleEdit}
+          handleDelete = {handleDelete}
+        />
 
       </div>
     </div>

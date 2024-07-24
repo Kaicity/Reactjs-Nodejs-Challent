@@ -15,9 +15,7 @@ const schemaData = mongoose.Schema({
     mobile: String,
     address: String
 },
-    {
-        timestamps: true
-    }
+    { timestamps: true }
 )
 
 //Entity Model MongooseModel
@@ -63,7 +61,7 @@ app.post("/create", async (req, res) => {
 /*
     body
     {
-        "id": "669ff8f94b662b102f3ecaa9",
+        "id": "669ff8f94b662b102f3ecaa9",F
         "name": "Nguyễn Minh Thông",
         "email": "nguyenminhhthongitmix@gmail.com",
         "mobile" : "0703338458"
@@ -71,8 +69,8 @@ app.post("/create", async (req, res) => {
 */
 app.put("/update", async (req, res) => {
     console.log(req.body)
-    const { id, ...rest } = req.body
-    await employeeModel.updateOne({ _id: req.body.id }, rest)
+    const { _id, ...rest } = req.body
+    await employeeModel.updateOne({ _id: req.body._id }, rest)
 
     res.send(
         {
