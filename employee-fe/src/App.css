@@ -1,0 +1,166 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f6ff;
+}
+
+.container {
+  padding: 10px;
+  /* background-color: red; */
+  max-width: fit-content;
+  margin: 50px auto;
+}
+
+.btn {
+  border: none;
+  padding: 7px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-add {
+  background-color: #194064;
+  color: white;
+}
+
+.icon-add {
+  margin-left: 5px;
+}
+
+.add-container {
+  display: flex;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-container form {
+  width: 480px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 30px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.add-container form label {
+  font-size: 18px;
+}
+
+.add-container form input {
+  font-size: 18px;
+  padding: 5px;
+  margin-top: 5px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.add-container form textarea {
+  font-size: 18px;
+  padding: 5px;
+  margin-top: 5px;
+  color: #000;
+  margin-bottom: 10px;
+  min-height: 100px;
+  max-width: 420px;
+}
+
+.btn-submit {
+  margin-top: 10px;
+  border: none;
+  padding: 13px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: royalblue;
+  color: white;
+  font-weight: 550;
+}
+
+.content-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-container form .btn-close {
+  width: 40px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.add-container form .btn-close h3 {
+  font-size: 35px;
+  color: gray;
+  margin-top: 25px;
+}
+
+.table-container {
+  margin-top: 25px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+
+.table-container table thead tr {
+  background-color: white;
+}
+
+.table-container table thead tr th,
+.table-container table tbody tr td {
+  min-width: 200px;
+  padding: 7px;
+  text-align: start;
+}
+
+.table-container table tbody tr td {
+  border-bottom: 1px solid #c9c5c2;
+}
+
+.action-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-container button {
+  border: none;
+  padding: 7px;
+  font-size: 16px;
+  min-width: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.action-container .btn-edit {
+  color: royalblue;
+}
+
+.action-container button :hover {
+ transform: scale(1.08);
+ transition: 0.25 all;
+}
+
+.action-container .btn-delete {
+  color: red;
+}
+
+.action-container .btn-see {
+  color: black;
+}
